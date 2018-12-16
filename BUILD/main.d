@@ -232,4 +232,4 @@ BUILD/main.o: main.cpp BUILD/mbed_config.h mbed-os/mbed.h \
  BSP_DISCO_F429ZI/Utilities/Fonts/../Fonts/fonts.h \
  BSP_DISCO_F429ZI/Drivers/BSP/STM32F429I-Discovery/../Components/ili9341/ili9341.h \
  BSP_DISCO_F429ZI/Drivers/BSP/STM32F429I-Discovery/../Components/ili9341/../Common/lcd.h \
- clock.h
+ clock.h ds3231/ds3231.h

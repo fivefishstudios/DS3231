@@ -2,10 +2,13 @@
   Demo program combining Multiplexed 7-segment LED Display and LCD Display.
   Push-button Switch input via Interrupt subroutines.
   + playing with RGB discrete LEDs
+  + displaying RTC clock
+  + using DS3231 RTC module
 */
 #include "mbed.h"
 #include "LCD_DISCO_F429ZI.h"
 #include "clock.h"
+#include "ds3231.h"
 using namespace std;
 
 // serial comms for debugging
@@ -22,6 +25,9 @@ DigitalOut led(PG_13);
 PwmOut RGBLED_red(PE_9);
 PwmOut RGBLED_grn(PE_11);
 PwmOut RGBLED_blu(PA_5);
+
+// instantiate RTC object
+Ds3231 rtc(PB_11, PB_10);   // (sda, scl)  -- consult datasheet for I2C channel pins we can use 
 
 // Our Interrupt Handler Routine, for Button(PA_0)
 void PBIntHandler()
@@ -153,6 +159,16 @@ void Display_Number(int Number, uint32_t Duration_ms)
   t.stop(); // stop timer
 }
 
+// clock data
+uint32_t year = 2018;
+uint32_t month = 12;
+uint32_t day_of_week = 6;
+uint32_t day = 15;
+uint32_t hh = 10;
+uint32_t mm = 54;
+uint32_t ss = 00;
+uint32_t rtn_val;
+
 /* 
   Start of Main Program 
   */
@@ -161,7 +177,13 @@ int main()
   // set usb serial
   pc.baud(115200);
 
-  SetDateTime(2018, 12, 15, 2, 18, 0); // yyyy, mm, dd, hh, mm, ss 
+  SetDateTime(year, month, day, hh, mm, ss);
+  // time = 12:00:00 AM 12hr mode
+  ds3231_time_t rtctime = {ss, mm, hh, 1, 1};   // seconds, min, hours, am_pm (true=pm), mode (true=12hour format)
+  rtn_val = rtc.set_time(rtctime);
+
+  ds3231_calendar_t calendar = {day_of_week, day, month, year};    // dayofweek, day, month, year
+  rtn_val = rtc.set_calendar(calendar);
 
   // setup Interrupt Handler
   Button.rise(&PBIntHandler);
@@ -212,11 +234,16 @@ int main()
           lcd.DisplayStringAt(10, 90, (uint8_t *)buf, CENTER_MODE);
 
           // display time only hh:mm:ss pp
-          time_t seconds = time(NULL);
-          strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&seconds));
+          // time_t seconds = time(NULL);
+          // strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&seconds));
+          
+          // rtn_val = rtc.get_time(&rtctime);    // RTC DS3231
+          time_t epoch_time; 
+          epoch_time = rtc.get_epoch();
+          strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&epoch_time));
           lcd.DisplayStringAt(10, 240, (uint8_t *)buf, CENTER_MODE);          
 
-          Display_Number(ctr, 250); // Number to display on 7-segment LED, Duration_ms
+          Display_Number(ctr, 50); // Number to display on 7-segment LED, Duration_ms
         }
       }
     }
