@@ -177,13 +177,14 @@ int main()
   // set usb serial
   pc.baud(115200);
 
-  SetDateTime(year, month, day, hh, mm, ss);
-  // time = 12:00:00 AM 12hr mode
-  ds3231_time_t rtctime = {ss, mm, hh, 1, 1};   // seconds, min, hours, am_pm (true=pm), mode (true=12hour format)
-  rtn_val = rtc.set_time(rtctime);
+  // SetDateTime(year, month, day, hh, mm, ss);   // using built-in RTC of STM32F4... not accurate
 
-  ds3231_calendar_t calendar = {day_of_week, day, month, year};    // dayofweek, day, month, year
-  rtn_val = rtc.set_calendar(calendar);
+  // NOTE: Comment once the RTC clock has been set and we have battery
+  // time = 12:00:00 AM 12hr mode
+  // ds3231_time_t rtctime = {ss, mm, hh, 1, 1};   // seconds, min, hours, am_pm (true=pm), mode (true=12hour format)
+  // rtn_val = rtc.set_time(rtctime);
+  // ds3231_calendar_t calendar = {day_of_week, day, month, year};    // dayofweek, day, month, year
+  // rtn_val = rtc.set_calendar(calendar);
 
   // setup Interrupt Handler
   Button.rise(&PBIntHandler);

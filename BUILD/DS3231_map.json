@@ -36,11 +36,11 @@
         "module": "[fill]", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
-            ".bss": 37, 
+            ".text-delta": -4, 
+            ".bss": 41, 
             ".data": 19, 
-            ".bss-delta": 0, 
-            ".text": 190
+            ".bss-delta": 4, 
+            ".text": 186
         }
     }, 
     {
@@ -80,22 +80,22 @@
         "module": "ds3231/ds3231.o", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": -318, 
             ".bss": 0, 
             ".data": 0, 
             ".bss-delta": 0, 
-            ".text": 866
+            ".text": 548
         }
     }, 
     {
         "module": "main.o", 
         "size": {
-            ".data-delta": 0, 
-            ".text-delta": 0, 
-            ".bss": 953, 
-            ".data": 28, 
-            ".bss-delta": 0, 
-            ".text": 2251
+            ".data-delta": -24, 
+            ".text-delta": -248, 
+            ".bss": 945, 
+            ".data": 4, 
+            ".bss-delta": -8, 
+            ".text": 2003
         }
     }, 
     {
@@ -156,12 +156,12 @@
     {
         "module": "mbed-os/platform", 
         "size": {
-            ".data-delta": 0, 
-            ".text-delta": 0, 
-            ".bss": 290, 
-            ".data": 268, 
-            ".bss-delta": 0, 
-            ".text": 5420
+            ".data-delta": -8, 
+            ".text-delta": -382, 
+            ".bss": 242, 
+            ".data": 260, 
+            ".bss-delta": -48, 
+            ".text": 5038
         }
     }, 
     {
@@ -179,19 +179,19 @@
         "module": "mbed-os/targets", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
-            ".bss": 1376, 
+            ".text-delta": -1520, 
+            ".bss": 1332, 
             ".data": 4, 
-            ".bss-delta": 0, 
-            ".text": 24115
+            ".bss-delta": -44, 
+            ".text": 22595
         }
     }, 
     {
         "summary": {
-            "static_ram": 13032, 
-            "total_flash_delta": 0, 
-            "static_ram_delta": 0, 
-            "total_flash": 117198
+            "static_ram": 12904, 
+            "total_flash_delta": -2504, 
+            "static_ram_delta": -128, 
+            "total_flash": 114694
         }
     }
 ]
