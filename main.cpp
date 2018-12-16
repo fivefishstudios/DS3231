@@ -52,7 +52,7 @@ void SetLEDBrightness(PwmOut led, float intensity)
   wait(0.0001);
 }
 
-#define DISPLAY_DELAY 0.010f
+#define DISPLAY_DELAY 0.0001f
 
 static const int Digits[] = {
     //abcdefgp    // 7-segment display + decimal point
@@ -177,8 +177,13 @@ int main()
   // set usb serial
   pc.baud(115200);
 
+  // get time from DS3231
+  time_t  epoch_time = rtc.get_epoch();  // RTC DS3231
+
+  // OPTION 1: Set built-in RTC time
   // SetDateTime(year, month, day, hh, mm, ss);   // using built-in RTC of STM32F4... not accurate
 
+  // OPTION 2: Set DS3231 RTC module
   // NOTE: Comment once the RTC clock has been set and we have battery
   // time = 12:00:00 AM 12hr mode
   // ds3231_time_t rtctime = {ss, mm, hh, 1, 1};   // seconds, min, hours, am_pm (true=pm), mode (true=12hour format)
@@ -236,13 +241,7 @@ int main()
           lcd.SetTextColor(LCD_COLOR_WHITE);
           lcd.DisplayStringAt(10, 90, (uint8_t *)buf, CENTER_MODE);
 
-          // display time only hh:mm:ss pp
-          // time_t seconds = time(NULL);       // built-in RTC
-          // strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&seconds));
-          
-          // rtn_val = rtc.get_time(&rtctime);    // RTC DS3231
-          time_t epoch_time; 
-          epoch_time = rtc.get_epoch();
+          epoch_time = rtc.get_epoch();  // RTC DS3231
           strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&epoch_time));
           lcd.DisplayStringAt(10, 240, (uint8_t *)buf, CENTER_MODE);          
           
