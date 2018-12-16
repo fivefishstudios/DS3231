@@ -27,7 +27,7 @@ PwmOut RGBLED_grn(PE_11);
 PwmOut RGBLED_blu(PA_5);
 
 // instantiate RTC object
-Ds3231 rtc(PB_11, PB_10);   // (sda, scl)  -- consult datasheet for I2C channel pins we can use 
+Ds3231 rtc(PC_9, PA_8);   // (sda, scl)  -- consult datasheet for I2C channel pins we can use 
 
 // Our Interrupt Handler Routine, for Button(PA_0)
 void PBIntHandler()
@@ -49,10 +49,10 @@ void SetLEDBrightness(PwmOut led, float intensity)
   float period = 0.000009f;
   led.period(period);
   led.pulsewidth(period * (intensity / 100));
-  wait(0.001);
+  wait(0.0001);
 }
 
-#define DISPLAY_DELAY 0.001f
+#define DISPLAY_DELAY 0.010f
 
 static const int Digits[] = {
     //abcdefgp    // 7-segment display + decimal point
@@ -84,7 +84,7 @@ DigitalOut Digit2(PC_12); // anode for Digit2 (tens)
 DigitalOut Digit3(PC_13); // anode for Digit3 (hundreds)
 
 DigitalOut SegmentA(PA_7); // clockwise, starting from top segment
-DigitalOut SegmentB(PA_8);
+DigitalOut SegmentB(PA_13);
 DigitalOut SegmentC(PA_15);
 DigitalOut SegmentD(PB_4);
 DigitalOut SegmentE(PB_7);
@@ -218,12 +218,14 @@ int main()
             ctr = 0;
           }
 
+          Display_Number(ctr, 100); // Number to display on 7-segment LED, Duration_ms
+
           SetLEDBrightness(RGBLED_red, r);
           SetLEDBrightness(RGBLED_grn, g);
           SetLEDBrightness(RGBLED_blu, b);
 
           sprintf(buf, "Red %03d ", r);
-          lcd.SetTextColor(LCD_COLOR_RED);
+          lcd.SetTextColor(LCD_COLOR_ORANGE);
           lcd.DisplayStringAt(10, 50, (uint8_t *)buf, CENTER_MODE);
 
           sprintf(buf, "Green %03d ", g);
@@ -235,7 +237,7 @@ int main()
           lcd.DisplayStringAt(10, 90, (uint8_t *)buf, CENTER_MODE);
 
           // display time only hh:mm:ss pp
-          // time_t seconds = time(NULL);
+          // time_t seconds = time(NULL);       // built-in RTC
           // strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&seconds));
           
           // rtn_val = rtc.get_time(&rtctime);    // RTC DS3231
@@ -243,8 +245,7 @@ int main()
           epoch_time = rtc.get_epoch();
           strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&epoch_time));
           lcd.DisplayStringAt(10, 240, (uint8_t *)buf, CENTER_MODE);          
-
-          Display_Number(ctr, 50); // Number to display on 7-segment LED, Duration_ms
+          
         }
       }
     }

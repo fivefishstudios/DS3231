@@ -36,10 +36,10 @@
         "module": "[fill]", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": -4, 
+            ".text-delta": 0, 
             ".bss": 41, 
             ".data": 19, 
-            ".bss-delta": 4, 
+            ".bss-delta": 0, 
             ".text": 186
         }
     }, 
@@ -80,7 +80,7 @@
         "module": "ds3231/ds3231.o", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": -318, 
+            ".text-delta": 0, 
             ".bss": 0, 
             ".data": 0, 
             ".bss-delta": 0, 
@@ -90,11 +90,11 @@
     {
         "module": "main.o", 
         "size": {
-            ".data-delta": -24, 
-            ".text-delta": -248, 
+            ".data-delta": 0, 
+            ".text-delta": 0, 
             ".bss": 945, 
             ".data": 4, 
-            ".bss-delta": -8, 
+            ".bss-delta": 0, 
             ".text": 2003
         }
     }, 
@@ -156,11 +156,11 @@
     {
         "module": "mbed-os/platform", 
         "size": {
-            ".data-delta": -8, 
-            ".text-delta": -382, 
+            ".data-delta": 0, 
+            ".text-delta": 0, 
             ".bss": 242, 
             ".data": 260, 
-            ".bss-delta": -48, 
+            ".bss-delta": 0, 
             ".text": 5038
         }
     }, 
@@ -179,18 +179,18 @@
         "module": "mbed-os/targets", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": -1520, 
+            ".text-delta": 0, 
             ".bss": 1332, 
             ".data": 4, 
-            ".bss-delta": -44, 
+            ".bss-delta": 0, 
             ".text": 22595
         }
     }, 
     {
         "summary": {
             "static_ram": 12904, 
-            "total_flash_delta": -2504, 
-            "static_ram_delta": -128, 
+            "total_flash_delta": 0, 
+            "static_ram_delta": 0, 
             "total_flash": 114694
         }
     }
