@@ -161,16 +161,16 @@ void Display_Number(int Number, uint32_t Duration_ms)
 }
 
 /* 
-  This function converts the raw temperature data from a DS3231 module into proper Celsius reading 
-  MSB + LSB  (bits 7th and 6th) 0bxx  
+  Converts the raw temperature data from DS3231 module into Celsius 
+  MSB + LSB  (bits 8th and 7th) 0bxx000000  
   MSB is the integer portion of temperature
-  LSB is the fractional portion, where 00 = 0.0C, 01=0.25C, 10=0.50C, 11=0.75C
+  LSB is the fractional portion, where 00=0.0C, 01=0.25C, 10=0.50C, 11=0.75C
   Then add the MSB and LSB to get Celsius Temperature
 */
 float DS3231_FriendlyTemperature_Celsius(long ds3231_rawtemp){
   float temp = 0;
-  int msb = (ds3231_rawtemp & 0b1111111100000000) >> 8;
-  int lsb = ds3231_rawtemp & 0b0000000011000000;
+  int msb = (ds3231_rawtemp) >> 8;
+  int lsb = ds3231_rawtemp & 0b0000000011000000 >> 6;
   switch (lsb){
     case 0: temp = 0; break;   
     case 1: temp = 0.25; break;
