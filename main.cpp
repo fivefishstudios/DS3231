@@ -214,7 +214,7 @@ int main()
     {
       for (g = 5; g < 100; g += 10)
       {
-        for (b = 0; b < 100; b += 15)
+        for (b = 0; b < 100; b += 5)
         {
 
           ctr++; // increment counter for display by 7-segment
@@ -223,7 +223,7 @@ int main()
             ctr = 0;
           }
 
-          Display_Number(ctr, 100); // Number to display on 7-segment LED, Duration_ms
+          Display_Number(ctr, 200); // Number to display on 7-segment LED, Duration_ms
 
           SetLEDBrightness(RGBLED_red, r);
           SetLEDBrightness(RGBLED_grn, g);
@@ -247,8 +247,7 @@ int main()
           lcd.DisplayStringAt(1, 240, (uint8_t *)buf, CENTER_MODE);          
 
           // display temperature
-          uint16_t ds3231_temp;
-          ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
+          uint16_t ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
           float tempF = ((ds3231_temp * 9) / 20.0f) + 32; // convert C to F
           sprintf(buf, "Temp: %4.2fF", tempF);
           lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
