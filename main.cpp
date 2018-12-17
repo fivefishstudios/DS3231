@@ -231,19 +231,28 @@ int main()
 
           sprintf(buf, "Red %03d ", r);
           lcd.SetTextColor(LCD_COLOR_ORANGE);
-          lcd.DisplayStringAt(10, 50, (uint8_t *)buf, CENTER_MODE);
+          lcd.DisplayStringAt(1, 50, (uint8_t *)buf, CENTER_MODE);
 
           sprintf(buf, "Green %03d ", g);
           lcd.SetTextColor(LCD_COLOR_GREEN);
-          lcd.DisplayStringAt(10, 70, (uint8_t *)buf, CENTER_MODE);
+          lcd.DisplayStringAt(1, 70, (uint8_t *)buf, CENTER_MODE);
 
           sprintf(buf, "Blue %03d ", b);
           lcd.SetTextColor(LCD_COLOR_WHITE);
-          lcd.DisplayStringAt(10, 90, (uint8_t *)buf, CENTER_MODE);
+          lcd.DisplayStringAt(1, 90, (uint8_t *)buf, CENTER_MODE);
 
+          // display time
           epoch_time = rtc.get_epoch();  // RTC DS3231
           strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&epoch_time));
-          lcd.DisplayStringAt(10, 240, (uint8_t *)buf, CENTER_MODE);          
+          lcd.DisplayStringAt(1, 240, (uint8_t *)buf, CENTER_MODE);          
+
+          // display temperature
+          uint16_t temp;
+          temp = rtc.get_temperature();
+          uint8_t tempMSB = temp / 100;
+          uint8_t tempLSB = temp % 100; 
+          sprintf(buf, "Temp:%3d.%02d F", tempMSB, tempLSB);
+          lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
           
         }
       }
