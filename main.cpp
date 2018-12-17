@@ -247,11 +247,10 @@ int main()
           lcd.DisplayStringAt(1, 240, (uint8_t *)buf, CENTER_MODE);          
 
           // display temperature
-          uint16_t temp;
-          temp = rtc.get_temperature();
-          uint8_t tempMSB = temp / 100;
-          uint8_t tempLSB = temp % 100; 
-          sprintf(buf, "Temp:%3d.%02d F", tempMSB, tempLSB);
+          uint16_t ds3231_temp;
+          ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
+          float tempF = ((ds3231_temp * 9) / 20.0f) + 32; // convert C to F
+          sprintf(buf, "Temp: %4.2fF", tempF);
           lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
           
         }
