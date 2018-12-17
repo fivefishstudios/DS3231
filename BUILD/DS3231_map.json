@@ -47,22 +47,22 @@
         "module": "[fill]", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 28, 
             ".bss": 41, 
             ".data": 19, 
             ".bss-delta": 0, 
-            ".text": 173
+            ".text": 185
         }
     }, 
     {
         "module": "[lib]/c.a", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 24, 
             ".bss": 127, 
             ".data": 2572, 
             ".bss-delta": 0, 
-            ".text": 49614
+            ".text": 49638
         }
     }, 
     {
@@ -102,11 +102,11 @@
         "module": "main.o", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 126, 
             ".bss": 945, 
             ".data": 4, 
             ".bss-delta": 0, 
-            ".text": 2082
+            ".text": 2144
         }
     }, 
     {
@@ -168,11 +168,11 @@
         "module": "mbed-os/platform", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 62, 
             ".bss": 242, 
             ".data": 260, 
             ".bss-delta": 0, 
-            ".text": 5038
+            ".text": 5100
         }
     }, 
     {
@@ -200,9 +200,9 @@
     {
         "summary": {
             "static_ram": 12912, 
-            "total_flash_delta": 0, 
+            "total_flash_delta": 240, 
             "static_ram_delta": 0, 
-            "total_flash": 120910
+            "total_flash": 121070
         }
     }
 ]

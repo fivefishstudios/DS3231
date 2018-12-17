@@ -168,17 +168,23 @@ void Display_Number(int Number, uint32_t Duration_ms)
   Then add the MSB and LSB to get Celsius Temperature
 */
 float DS3231_FriendlyTemperature_Celsius(long ds3231_rawtemp){
-  float temp = 0;
-  int msb = (ds3231_rawtemp) >> 8;
-  int lsb = ds3231_rawtemp & 0b0000000011000000 >> 6;
-  switch (lsb){
-    case 0: temp = 0; break;   
-    case 1: temp = 0.25; break;
-    case 2: temp = 0.50; break;
-    case 3: temp = 0.75; break;
-  }
-  temp += msb;
-  return temp;
+  // float temp = 0;
+  // int msb = (ds3231_rawtemp) >> 8;  
+  // int lsb = (ds3231_rawtemp & 0b0000000011000000) >> 6;
+  // switch (lsb){
+  //   case 0: temp = 0; break;   
+  //   case 1: temp = 0.25; break;
+  //   case 2: temp = 0.50; break;
+  //   case 3: temp = 0.75; break;
+  // }
+  // temp += msb;    
+  // return temp;
+
+  pc.printf("ds3231 MSB:LSB temp %u \n", ds3231_rawtemp);
+  pc.printf("ds3231 Celsius temp %f \n", ds3231_rawtemp/256.0f );
+
+  // same result as above if we just divide by 256.0  :/
+  return ds3231_rawtemp / 256.0f;
 }
 
 // clock data
@@ -232,7 +238,7 @@ int main()
   // start of main loop
   while (true)
   {
-    for (r = 0; r < 100; r += 10)
+    for (r = 15; r < 100; r += 5)
     {
       for (g = 5; g < 100; g += 10)
       {
@@ -280,12 +286,6 @@ int main()
           lcd.SetFont(&Font24);
           lcd.SetTextColor(0xFFFF7700);  
           lcd.DisplayStringAt(1, 240, (uint8_t *)buf, CENTER_MODE);          
-
-          // display temperature
-          // uint16_t ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
-          // float tempF = ((ds3231_temp * 9) / 20.0f) + 32; // convert C to F
-          // sprintf(buf, "Temp: %4.2fF", tempF);
-          // lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
           
         }
       }
