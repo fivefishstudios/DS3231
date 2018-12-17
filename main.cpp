@@ -9,6 +9,7 @@
 #include "LCD_DISCO_F429ZI.h"
 #include "clock.h"
 #include "ds3231.h"
+#include "myfonts.h"
 using namespace std;
 
 // serial comms for debugging
@@ -159,6 +160,27 @@ void Display_Number(int Number, uint32_t Duration_ms)
   t.stop(); // stop timer
 }
 
+/* 
+  This function converts the raw temperature data from a DS3231 module into proper Celsius reading 
+  MSB + LSB  (bits 7th and 6th) 0bxx  
+  MSB is the integer portion of temperature
+  LSB is the fractional portion, where 00 = 0.0C, 01=0.25C, 10=0.50C, 11=0.75C
+  Then add the MSB and LSB to get Celsius Temperature
+*/
+float DS3231_FriendlyTemperature_Celsius(long ds3231_rawtemp){
+  float temp = 0;
+  int msb = (ds3231_rawtemp & 0b1111111100000000) >> 8;
+  int lsb = ds3231_rawtemp & 0b0000000011000000;
+  switch (lsb){
+    case 0: temp = 0; break;   
+    case 1: temp = 0.25; break;
+    case 2: temp = 0.50; break;
+    case 3: temp = 0.75; break;
+  }
+  temp += msb;
+  return temp;
+}
+
 // clock data
 uint32_t year = 2018;
 uint32_t month = 12;
@@ -195,16 +217,16 @@ int main()
   Button.rise(&PBIntHandler);
 
   // setup LCD Display
-  lcd.Clear(0xFF000011);
+  lcd.Clear(0xFF000055);
   lcd.SetFont(&Font24);
-  lcd.SetBackColor(0xFF000011);      // text background color
+  lcd.SetBackColor(0xFF000055);      // text background color
   lcd.SetTextColor(LCD_COLOR_WHITE); // text foreground color
   char buf[50];                      // buffer for integer to text conversion
-
+  lcd.DisplayStringAt(0, 200, (uint8_t *)" by owel.codes ", CENTER_MODE); 
+  
   // setup 7-segment LED Display
   Display_Clear();
-  lcd.DisplayStringAt(0, 200, (uint8_t *)" by owel.codes ", CENTER_MODE); 
-
+  
   int r, g, b;
   long ctr = 1;
   // start of main loop
@@ -229,28 +251,41 @@ int main()
           SetLEDBrightness(RGBLED_grn, g);
           SetLEDBrightness(RGBLED_blu, b);
 
-          sprintf(buf, "Red %03d ", r);
-          lcd.SetTextColor(LCD_COLOR_ORANGE);
-          lcd.DisplayStringAt(1, 50, (uint8_t *)buf, CENTER_MODE);
+          lcd.SetFont(&Grotesk16x32);
+          lcd.SetTextColor(0xFF7EBAE8);  
+          
+          uint16_t ds3231_temp = rtc.get_temperature();  // MSB | LSB (in decimal format)
+          float tempC = DS3231_FriendlyTemperature_Celsius(ds3231_temp);
+          // sprintf(buf, "%4.2f C", tempC);
+          float tempF = (tempC * (9/5.0f)) + 32; // convert Celsius to Fahrenheit
+          sprintf(buf, "%4.2f F", tempF);
+          lcd.DisplayStringAt(1, 40, (uint8_t *)"Temperature", CENTER_MODE);         
+          lcd.DisplayStringAt(1, 90, (uint8_t *)buf, CENTER_MODE);          
 
-          sprintf(buf, "Green %03d ", g);
-          lcd.SetTextColor(LCD_COLOR_GREEN);
-          lcd.DisplayStringAt(1, 70, (uint8_t *)buf, CENTER_MODE);
+          // sprintf(buf, "Red %03d ", r);
+          // lcd.SetTextColor(LCD_COLOR_ORANGE);
+          // lcd.DisplayStringAt(1, 50, (uint8_t *)buf, CENTER_MODE);
 
-          sprintf(buf, "Blue %03d ", b);
-          lcd.SetTextColor(LCD_COLOR_WHITE);
-          lcd.DisplayStringAt(1, 90, (uint8_t *)buf, CENTER_MODE);
+          // sprintf(buf, "Green %03d ", g);
+          // lcd.SetTextColor(LCD_COLOR_GREEN);
+          // lcd.DisplayStringAt(1, 70, (uint8_t *)buf, CENTER_MODE);
+
+          // sprintf(buf, "Blue %03d ", b);
+          // lcd.SetTextColor(LCD_COLOR_WHITE);
+          // lcd.DisplayStringAt(1, 90, (uint8_t *)buf, CENTER_MODE);
 
           // display time
           epoch_time = rtc.get_epoch();  // RTC DS3231
           strftime(buf, sizeof(buf), "%I:%M:%S %p", localtime(&epoch_time));
+          lcd.SetFont(&Font24);
+          lcd.SetTextColor(0xFFFF7700);  
           lcd.DisplayStringAt(1, 240, (uint8_t *)buf, CENTER_MODE);          
 
           // display temperature
-          uint16_t ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
-          float tempF = ((ds3231_temp * 9) / 20.0f) + 32; // convert C to F
-          sprintf(buf, "Temp: %4.2fF", tempF);
-          lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
+          // uint16_t ds3231_temp = (rtc.get_temperature() / 100.0f) / 4;  // Centigrade;  MSB.LSB 
+          // float tempF = ((ds3231_temp * 9) / 20.0f) + 32; // convert C to F
+          // sprintf(buf, "Temp: %4.2fF", tempF);
+          // lcd.DisplayStringAt(1, 280, (uint8_t *)buf, CENTER_MODE);          
           
         }
       }

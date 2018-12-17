@@ -22,6 +22,17 @@
         }
     }, 
     {
+        "module": "Grotesk16x32.o", 
+        "size": {
+            ".data-delta": 0, 
+            ".text-delta": 0, 
+            ".bss": 0, 
+            ".data": 8, 
+            ".bss-delta": 0, 
+            ".text": 6080
+        }
+    }, 
+    {
         "module": "LCD_DISCO_F429ZI/LCD_DISCO_F429ZI.o", 
         "size": {
             ".data-delta": 0, 
@@ -36,11 +47,11 @@
         "module": "[fill]", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 36, 
             ".bss": 41, 
             ".data": 19, 
             ".bss-delta": 0, 
-            ".text": 191
+            ".text": 189
         }
     }, 
     {
@@ -91,11 +102,11 @@
         "module": "main.o", 
         "size": {
             ".data-delta": 0, 
-            ".text-delta": 0, 
+            ".text-delta": 28, 
             ".bss": 945, 
             ".data": 4, 
             ".bss-delta": 0, 
-            ".text": 2144
+            ".text": 2050
         }
     }, 
     {
@@ -188,10 +199,10 @@
     }, 
     {
         "summary": {
-            "static_ram": 12904, 
-            "total_flash_delta": 0, 
+            "static_ram": 12912, 
+            "total_flash_delta": 64, 
             "static_ram_delta": 0, 
-            "total_flash": 114902
+            "total_flash": 120894
         }
     }
 ]
